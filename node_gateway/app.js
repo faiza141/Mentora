@@ -7,12 +7,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const PORT = process.env.PORT
 
-app.use(cors({
-    origin:"http://localhost:5173/",
-    credentials:true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], 
-  allowedHeaders: ["Content-Type", "Authorization"], // optional, but important if you're sending tokens or JSON
-})); 
+app.use(cors()); 
 app.use(express.json()); //every json that comes from frontend will be converted to js object. this function will work on every route.
 app.use(cookieParser());
 
