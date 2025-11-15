@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';  // ← ADD THIS
 import 'screens/login.dart';
 import 'services/theme_service.dart';
-import 'providers/token_provider.dart';  // ← ADD THIS
+import 'providers/token_provider.dart';
+import "observers/provider_logger.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ThemeService.init();
 
   runApp(
-    ProviderScope(                      // ← REQUIRED for Riverpod
+    ProviderScope(
+      //observers: [ProviderLogger()],
       child: const ChatbotApp(),
     ),
   );
@@ -31,7 +33,7 @@ class _ChatbotAppState extends ConsumerState<ChatbotApp> {        // ← CHANGE 
     ThemeService.addListener(_onThemeChanged);
 
     /// Load tokens on app start (AUTO-LOGIN READY)
-    ref.read(tokenProvider.notifier).loadTokens();   // ← ADD THIS
+    ref.read(tokenProvider.notifier).loadTokens();
   }
 
   @override
@@ -50,7 +52,7 @@ class _ChatbotAppState extends ConsumerState<ChatbotApp> {        // ← CHANGE 
       title: 'Mentora',
       debugShowCheckedModeBanner: false,
       theme: ThemeService.currentThemeData,
-      home: const LoginScreen(),   // ← You can auto-skip later if tokens exist
+      home: const LoginScreen(),
     );
   }
 }

@@ -6,6 +6,11 @@ class TokenState {
   final String? refreshToken;
 
   const TokenState({this.accessToken, this.refreshToken});
+
+  @override
+  String toString() {
+    return 'TokenState(accessToken: $accessToken, refreshToken: $refreshToken)';
+  }
 }
 
 class TokenNotifier extends StateNotifier<TokenState> {
