@@ -5,6 +5,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains.llm import LLMChain
 from langchain.memory import ConversationBufferMemory
+from langchain_core.pydantic_v1 import BaseModel,Field
 from dotenv import load_dotenv
 from debug_logger import log_error
 
@@ -18,6 +19,10 @@ logging.getLogger("absl").setLevel(logging.ERROR)
 conversationMemory = None
 chain = None
 
+class QAresponse(BaseModel):
+    answer : str
+    knowsAnswer:bool = Field(description="Return false if the model is unsure")
+
 GEMENI_API_KEY = os.getenv('GOOGLE_API_KEY')
 
 llm = ChatGoogleGenerativeAI(
@@ -25,14 +30,19 @@ llm = ChatGoogleGenerativeAI(
     temperature=0.9,
     google_api_key=GEMENI_API_KEY
 )
-
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are an AI assistant for Gautam Buddha University. "
-               "Keep answers under 100 tokens. Sound natural and human."
-               "If you do not know something you can politely be unaware of the answer."),
+    ("system",
+     "You are an AI assistant for Gautam Buddha University. "
+     "You MUST return a JSON object following this schema: "
+     "{ answer: string, knowsAnswer: boolean }. "
+     "Keep the answer concise **when the question can be answered briefly**, "
+     "but if detailed explanation is required, you may exceed the usual length "
+     "to maintain clarity and completeness. "
+     "If you are unsure or lack the information, set knowsAnswer to false."
+    ),
     ("system", "Conversation so far:\n{chat_history}"),
-    ("system", "Here is some additional context you must use:\n{context}"),  
-    ("human", "{user_query}")                             
+    ("system", "Additional context:\n{context}"),
+    ("human", "{user_query}")
 ])
 
 class Status(str, Enum):
@@ -55,19 +65,25 @@ async def call_llm(query: str, context: str, status: Status) -> str:
                     return_messages=False
                 )
 
+                structuredLLM = llm.with_structured_output(QAresponse)
+
                 chain = LLMChain(
-                    llm=llm,
+                    llm=structuredLLM,
                     prompt=prompt,
                     memory=conversationMemory,
                     verbose=True
                 )
 
             # RUN THE CHAIN
-            response = await chain.apredict(
+            response : QAresponse = await chain.apredict(
                 user_query=query,
                 context=context
             )
-            return response
+            if not response.knowsAnswer:
+                
+                return "Model does not know the answer to this query please contact the concerning authority."
+            else:
+                return response.answer
 
         # TURN MEMORY OFF
         elif status == Status.off:

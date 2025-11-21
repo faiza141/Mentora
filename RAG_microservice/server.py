@@ -13,8 +13,13 @@ from store_embeddings import upsertFacts
 class userQuery(BaseModel):
     query: str
 
-class facts(BaseModel):
+class recordInfo(BaseModel):
     facts: list[str]
+    category:str
+    subcategory:str
+    department:str
+    idPrefix:str
+
 
 app = FastAPI()
 load_model_once()
@@ -30,14 +35,14 @@ async def process_data(query: userQuery, status: Status):
         return {"error": str(err)}
 
 @app.post("/getEmbeddings/")
-def getEmbeddings(facts: facts):
+def getEmbeddings(facts: recordInfo):
     response = generate_embeddings(facts.facts)
     return {"embeddings": response}
 
-@app.post('/upsertFacts')
-def uploadData(facts: facts):
+@app.post('/upsertRecords')
+def upsertRecords(records: recordInfo):
     try:
-        response = upsertFacts(facts.facts)
+        response = upsertFacts(records.facts)
         return {
             'message': "Data upserted successfully!",
             'response': response 

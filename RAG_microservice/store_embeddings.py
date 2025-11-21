@@ -1,8 +1,7 @@
 from getEmbeddings import generate_embeddings
 from pinecone_config import index
-import time
 from debug_logger import log_error
-
+from datetime import datetime, timezone
 
 
 dummy_data = [
@@ -22,17 +21,22 @@ dummy_data = [
 
 
 
-def upsertFacts(data : list[str]):
+def upsertFacts(data : list[str],category,subcategory,department,idPrefix):
 
     try:
         embeddings = generate_embeddings(data)
-
+        timestamp = datetime.now(timezone.utc).isoformat()
         to_upsert = []
         for i, text in enumerate(data):
             to_upsert.append({
-                "id": f"gbu-{i}",              # unique ID
+                "id": f"{idPrefix}-{i}",              # unique ID
                 "values": embeddings[i],
-                "metadata": {"text": text},
+                "metadata": {"text": text,
+                             "category":category,
+                             "subcategory":subcategory,
+                             "department": department,
+                             "timestamp":timestamp
+                             }
             })
 
         index.upsert(vectors=to_upsert)
