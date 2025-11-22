@@ -42,14 +42,25 @@ def getEmbeddings(facts: recordInfo):
     response = generate_embeddings(facts.facts)
     return {"embeddings": response}
 
+
 @app.post('/upsertRecords')
 def upsertRecords(records: recordInfo):
     try:
-        response = upsertFacts(records.facts)
+        recordsList = records.facts
+        category = records.category
+        subcategory = records.subcategory
+        department = records.department
+        idPrefix = records.idPrefix
+
+        response = upsertFacts(
+            recordsList, category, subcategory, department, idPrefix
+        )
+
         return {
             'message': "Data upserted successfully!",
             'response': response 
         }
+
     except Exception as err:
         return JSONResponse(
             status_code=400,

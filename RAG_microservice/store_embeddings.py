@@ -45,4 +45,6 @@ def upsertFacts(data : list[str],category,subcategory,department,idPrefix):
         return f"Input: {len(data)}, Output: {len(embeddings)}"
     except Exception as err:
         log_error(err)
-        return f"Error! :\n{err}"
+        raise RuntimeError(f"Error! :\n{err}") 
+    
+    

@@ -3,7 +3,7 @@ from pinecone_config import index
 from typing import List, Dict
 from debug_logger import log_error
 
-def searchFact(userQuery :str ):
+def searchFact(userQuery :str,category,subcategory,department ):
     
     try:
         queryList = [userQuery]
@@ -11,7 +11,13 @@ def searchFact(userQuery :str ):
         result = index.query(
             vector = embeddings,
             top_k = 3,
-            include_metadata = True
+            include_metadata = True,
+            filter={"category":category,
+                    "subcategory":subcategory,
+                    "department": department,
+                             
+
+            }
         )
         print(result)
         return result['matches']
