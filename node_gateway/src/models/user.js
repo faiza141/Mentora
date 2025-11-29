@@ -7,22 +7,17 @@ const bcrypt = require("bcrypt");
 const admins = process.env.admins
 
 const userSchema = mongoose.Schema({
-    
     adminId:{
         type:String,
         trim:true,
         unique:true,
         sparse:true
-        
-
     },
-
     role:{
         type :String,
         enum:['user','admin'],
         default:'user'
     },
-    
     firstName : {
         type:String,
         required:true,

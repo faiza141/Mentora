@@ -10,7 +10,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def load_model_once():
-    """Load the model and tokenizer once and keep them in GPU memory."""
+    
     global model, tokenizer
 
     if model is None:
@@ -18,7 +18,7 @@ def load_model_once():
         tokenizer = AutoTokenizer.from_pretrained("google/embeddinggemma-300m")
         model = AutoModel.from_pretrained(
             "google/embeddinggemma-300m",
-            dtype=torch.float32   # ✅ use float32 for stability
+            dtype=torch.float32   
         ).to(device)
         model.eval()
         print("✅ Model successfully loaded and ready.")
@@ -43,7 +43,7 @@ def generate_embeddings(texts: list[str]):
     embeddings = outputs.last_hidden_state.mean(dim=1)
     embeddings = normalize(embeddings, p=2, dim=1)
 
-    # ✅ Convert safely and remove NaN/Inf
+    
     embeddings = embeddings.cpu().numpy()
     embeddings = np.nan_to_num(embeddings, nan=0.0, posinf=0.0, neginf=0.0)
 

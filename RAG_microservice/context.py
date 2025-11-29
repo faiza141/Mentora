@@ -10,7 +10,7 @@ def searchFact(userQuery :str ):
         embeddings = generate_embeddings(queryList)
         result = index.query(
             vector = embeddings,
-            top_k = 3,
+            top_k = 10,
             include_metadata = True,
             )
         print(result)

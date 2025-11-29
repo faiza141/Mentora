@@ -75,3 +75,34 @@ gbu_admission_steps = [
     "Step 21 of application process of admission: Download your provisional admission letter from the portal after fee payment.",
     "Step 22 of application process of admission: Report to the university on the assigned date for final admission formalities."
 ]
+
+hostel_admission_steps = [
+    "Step 1 of hostel allotment process: Log in to the OHMS portal using your student credentials.",
+    "Step 2 of hostel allotment process: Open the hostel application form on the OHMS portal.",
+    "Step 3 of hostel allotment process: Enter your personal details in the hostel application form.",
+    "Step 4 of hostel allotment process: Select your preferred hostel and room type in the form.",
+    "Step 5 of hostel allotment process: Upload the required documents for hostel application.",
+    "Step 6 of hostel allotment process: Submit the hostel application form for verification.",
+    "Step 7 of hostel allotment process: Wait for the hostel authority to verify your application.",
+    "Step 8 of hostel allotment process: Pay the required hostel and mess fee after the allotment is confirmed.",
+    "Step 9 of hostel allotment process: Download the hostel allotment confirmation from the portal.",
+    "Step 10 of hostel allotment process: Report to the allotted hostel on the assigned reporting date."
+]
+
+gbu_fee_payment_steps = [
+    "Step 1 of fee payment process: Visit the official Gautam Buddha University website to begin the fee payment process.",
+    "Step 2 of fee payment process: Navigate to the Online Fee section from the university homepage.",
+    "Step 3 of fee payment process: Open the designated academic fee payment portal provided on the Online Fee page.",
+    "Step 4 of fee payment process: Enter your enrollment number in the fee payment portal.",
+    "Step 5 of fee payment process: Enter your registered mobile number in the fee payment portal.",
+    "Step 6 of fee payment process: Verify your login using the OTP sent to your registered mobile number.",
+    "Step 7 of fee payment process: View the academic fee details displayed on the portal after login.",
+    "Step 8 of fee payment process: Check the payable amount listed for the current semester.",
+    "Step 9 of fee payment process: Select the academic fee payment option shown on the portal.",
+    "Step 10 of fee payment process: Choose your preferred online payment method from the available options.",
+    "Step 11 of fee payment process: Complete the payment using the selected online payment method.",
+    "Step 12 of fee payment process: Wait for the confirmation message on the portal after successful payment.",
+    "Step 13 of fee payment process: Download the fee receipt from the portal after payment confirmation.",
+    "Step 14 of fee payment process: Save the downloaded fee receipt for future academic and administrative use.",
+    "Step 15 of fee payment process: Report any failed transaction to the university accounts section with proof of payment."
+]
